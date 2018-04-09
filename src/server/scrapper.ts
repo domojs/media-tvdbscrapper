@@ -4,203 +4,215 @@ import * as path from 'path'
 import { Response } from 'request';
 import * as levenshtein from 'levenshtein';
 import { MediaType, TVShow, Movie } from '@domojs/media';
+import * as url from 'url';
 const APIKEY = '833A54EE450AAD6F';
 
 var http: akala.Http = akala.resolve('$http');
 
-interface DbTvShow extends TVShow
+export interface DbTvShow extends TVShow
 {
     tvdbid: number;
 }
 
-interface DbTvMovie extends Movie
+export interface DbTvMovie extends Movie
 {
     tvdbid: number;
     displayName: string;
     overview: string;
 }
 
-interface JWT
+export function setLanguage(l: string)
 {
-    token: string;
+    api.setLanguage(l);
 }
 
-var currentJwt: JWT;
-
-interface SearchResult
+namespace api
 {
-    "aliases": string[],
-    "banner": string,
-    "firstAired": string,
-    "id": number,
-    "network": string,
-    "overview": string,
-    "seriesName": string,
-    "status": string
-}
-
-interface SeriesResult
-{
-    "added": string,
-    "airsDayOfWeek": string,
-    "airsTime": string,
-    "aliases": string[],
-    "banner": string,
-    "firstAired": string,
-    "genre": string[],
-    "id": number,
-    "imdbId": string,
-    "lastUpdated": number,
-    "network": string,
-    "networkId": string,
-    "overview": string,
-    "rating": string,
-    "runtime": string,
-    "seriesId": number,
-    "seriesName": string,
-    "siteRating": number,
-    "siteRatingCount": number,
-    "status": string,
-    "zap2itId": string
-}
-
-interface EpisodeResult
-{
-    "absoluteNumber": number,
-    "airedEpisodeNumber": number,
-    "airedSeason": number,
-    "dvdEpisodeNumber": number,
-    "dvdSeason": number,
-    "episodeName": string,
-    "firstAired": string,
-    "id": number,
-    "lastUpdated": number,
-    "overview": string
-}
-
-interface ImageResult
-{
-    "fileName": string,
-    "id": number,
-    "keyType": string,
-    "languageId": number,
-    "ratingsInfo": {
-        "average": number,
-        "count": number
-    },
-    "resolution": string,
-    "subKey": string,
-    "thumbnail": string
-}
-
-function authenticate(): PromiseLike<JWT>
-{
-    return http.post('https://api.thetvdb.com/login', { apikey: APIKEY }).then((jwt) =>
+    export interface JWT
     {
-        return currentJwt = jwt;
-    });
-}
+        token: string;
+    }
+    var language = 'en'
+    var currentJwt: JWT;
 
-function searchSerie(name: string, jwt?: JWT): PromiseLike<SearchResult[]>
-{
-    jwt = jwt || currentJwt;
-    if (!jwt)
-        return authenticate().then((jwt) =>
-        {
-            return searchSerie(name, jwt);
-        })
-    return http.call({
-        method: 'get',
-        headers: { 'Authorization': 'Bearer ' + jwt.token },
-        params: { name: name },
-        url: 'https://api.thetvdb.com/search/series'
-    }).then(function (response)
+    export function setLanguage(l: string)
     {
-        return JSON.parse(response.body);
-    }, function (response: Response)
+        language = l;
+    }
+
+    export interface SearchResult
+    {
+        "aliases": string[],
+        "banner": string,
+        "firstAired": string,
+        "id": number,
+        "network": string,
+        "overview": string,
+        "seriesName": string,
+        "status": string
+    }
+
+    export interface SeriesResult
+    {
+        "added": string,
+        "airsDayOfWeek": string,
+        "airsTime": string,
+        "aliases": string[],
+        "banner": string,
+        "firstAired": string,
+        "genre": string[],
+        "id": number,
+        "imdbId": string,
+        "lastUpdated": number,
+        "network": string,
+        "networkId": string,
+        "overview": string,
+        "rating": string,
+        "runtime": string,
+        "seriesId": number,
+        "seriesName": string,
+        "siteRating": number,
+        "siteRatingCount": number,
+        "status": string,
+        "zap2itId": string
+    }
+
+    export interface EpisodeResult
+    {
+        "absoluteNumber": number,
+        "airedEpisodeNumber": number,
+        "airedSeason": number,
+        "dvdEpisodeNumber": number,
+        "dvdSeason": number,
+        "episodeName": string,
+        "firstAired": string,
+        "id": number,
+        "lastUpdated": number,
+        "overview": string
+    }
+
+    export interface ImageTypeResult
+    {
+        keyType: 'poster' | 'banner' | 'fanart' | 'season' | 'series',
+        resolution: string[];
+        subKey: string[];
+    }
+
+    export interface ImageResult
+    {
+        "fileName": string,
+        "id": number,
+        "keyType": string,
+        "languageId": number,
+        "ratingsInfo": {
+            "average": number,
+            "count": number
+        },
+        "resolution": string,
+        "subKey": string,
+        "thumbnail": string
+    }
+
+    export interface ImageCountResult
+    {
+        "fanart": number,
+        "poster": number,
+        "season": number,
+        "seasonwide": number,
+        "series": number
+    }
+
+    export interface ActorResult
+    {
+        "id": number,
+        "image": string,
+        "imageAdded": string,
+        "imageAuthor": number,
+        "lastUpdated": string,
+        "name": string,
+        "role": string,
+        "seriesId": number,
+        "sortOrder": number
+    }
+
+    export function authenticate(): PromiseLike<JWT>
+    {
+        return http.call({
+            url: 'https://api.thetvdb.com/login',
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ apikey: APIKEY })
+        }).then((response) =>
         {
-            if (response.statusCode == 404)
-                return null;
+            if (response.response.statusCode == 200)
+                return currentJwt = JSON.parse(response.body);
         });
-}
+    }
 
-function fetchSerie(id: number, jwt?: JWT): PromiseLike<SeriesResult>
-{
-    jwt = jwt || currentJwt;
-    if (!jwt)
-        return authenticate().then((jwt) =>
-        {
-            return fetchSerie(name, jwt);
-        })
-    return http.call({
-        method: 'get',
-        headers: { 'Authorization': 'Bearer ' + jwt.token },
-        params: { name: name },
-        url: 'https://api.thetvdb.com/series/' + id
-    }).then(function (response)
+    export function searchSerieByName(name: string, language?: string, jwt?: JWT)
     {
-        return JSON.parse(response.body);
-    }, function (response: Response)
-        {
-            if (response.statusCode == 404)
-                return null;
-        });
-}
+        return sendRequest<SearchResult[]>('/search/series', { name: name }, language, jwt);
+    }
 
-function getEpisodes(tvdbid: number, jwt?: JWT): PromiseLike<EpisodeResult[]>
-{
-    jwt = jwt || currentJwt;
-    if (!jwt)
-        return authenticate().then((jwt) =>
-        {
-            return getEpisodes(name, jwt);
-        })
-    return http.call({
-        method: 'get',
-        headers: { 'Authorization': 'Bearer ' + jwt.token },
-        params: { name: name },
-        url: 'https://api.thetvdb.com/search/series/episodes'
-    }).then(function (response)
+    export function getSerie(id: number, language?: string, jwt?: JWT)
     {
-        return JSON.parse(response.body);
-    }, function (response: Response)
-        {
-            if (response.statusCode == 404)
-                return null;
-        });
-}
-
-function searchPoster(tvdbid: number, jwt?: JWT): PromiseLike<ImageResult[]>
-{
-    jwt = jwt || currentJwt;
-    if (!jwt)
-        return authenticate().then((jwt) =>
-        {
-            return searchPoster(name, jwt);
-        })
-    return http.call({
-        method: 'get',
-        headers: { 'Authorization': 'Bearer ' + jwt.token },
-        params: { keyType: 'poster' },
-        url: 'https://api.thetvdb.com/series/' + tvdbid + '/images/query'
-    }).then(function (response)
+        return sendRequest<SeriesResult>(`/series/${id}`, null, language, jwt);
+    }
+    export function getEpisodes(id: number, language?: string, jwt?: JWT)
     {
-        return JSON.parse(response.body);
-    }, function (response: Response)
-        {
-            if (response.statusCode == 404)
+        return sendRequest<EpisodeResult[]>(`/series/${id}/episodes`, null, language, jwt);
+    }
+    export function getActors(id: number, language?: string, jwt?: JWT)
+    {
+        return sendRequest<ActorResult[]>(`/series/${id}/actors`, null, language, jwt);
+    }
+    export function countImagesByType(id: number, jwt?: JWT)
+    {
+        return sendRequest<ImageCountResult>(`/series/${id}/images`, null, null, jwt);
+    }
+    export function getImageTypes(id: number, jwt?: JWT)
+    {
+        return sendRequest<ImageTypeResult[]>(`/series/${id}/images/query/params`, null, null, jwt);
+    }
+    export function getImagesByType(id: number, imageType: 'poster' | 'banner' | 'fanart' | 'season' | 'series', jwt?: JWT)
+    {
+        return sendRequest<ImageResult[]>(`/series/${id}/images/query`, { keyType: imageType }, 'en', jwt);
+    }
+    export function sendRequest<T>(path: string, queryString: { [key: string]: string | string[] }, requestLanguage?: string, jwt?: JWT): PromiseLike<T>
+    {
+        jwt = jwt || currentJwt;
+        requestLanguage = requestLanguage || language;
+        if (!jwt)
+            return authenticate().then((jwt) =>
             {
+                return sendRequest<T>(path, queryString, requestLanguage, jwt);
+            });
+        return http.call({
+            url: url.format(new url.URL(path, 'https://api.thetvdb.com/')),
+            params: queryString,
+            type: 'json',
+            headers: { authorization: 'Bearer ' + jwt.token, "accept-language": requestLanguage || 'en' }
+        }).then(function (result)
+        {
+            if (result.response.statusCode == 404)
                 return null;
-            }
-        });
+            if (result.response.statusCode == 200)
+                return (<any>result.body).data as T;
+            return Promise.reject(result.response) as PromiseLike<T>;
+        }, function (err)
+            {
+                console.error(err);
+                return Promise.reject(err);
+            });
+    }
 }
 
-type cache = { serie: SeriesResult, poster: ImageResult, episodes: EpisodeResult[] };
-var tvdbNameCache: { [key: string]: PromiseLike<SearchResult[]> } = {};
+type cache = { serie: api.SeriesResult, poster?: api.ImageResult, episodes: api.EpisodeResult[], banner?: api.ImageResult };
+var tvdbNameCache: { [key: string]: PromiseLike<api.SearchResult[]> } = {};
 var tvdbCache: { [key: number]: PromiseLike<cache> } = {};
-function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
+export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
 {
-    var buildPath = function (Series: SearchResult, confidence: number)
+    var buildPath = function (Series: api.SearchResult, confidence: number)
     {
         if (Series.overview)
             media.overview = Series.overview;
@@ -216,7 +228,7 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
             if (cacheItem.episodes)
             {
                 media.episodes = cacheItem.episodes.length;
-                var matchingEpisode = akala.grep(cacheItem.episodes, function (e: EpisodeResult)
+                var matchingEpisode = akala.grep(cacheItem.episodes, function (e: api.EpisodeResult)
                 {
                     return media.episode && e.airedEpisodeNumber == media.episode && (!media.season || media.season == e.airedSeason[0]);
                 })[0];
@@ -228,7 +240,7 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
                 }
             }
 
-            if (cacheItem.serie.genre.indexOf('Animation') > -1)
+            if ('Animation' in cacheItem.serie.genre)
                 if (confidence > 0.5)
                     return 'Animes/' + Series.seriesName + '/' + newName + path.extname(media.path);
                 else
@@ -237,13 +249,43 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
                 return 'TV Series/' + Series.seriesName + '/' + newName + path.extname(media.path);
         };
         if (!tvdbCache[media.tvdbid])
-            tvdbCache[media.tvdbid] = fetchSerie(media.tvdbid).then((serie) =>
+            tvdbCache[media.tvdbid] = api.getSerie(media.tvdbid).then((serie) =>
             {
-                return getEpisodes(media.tvdbid).then((episodes) =>
+                return api.getEpisodes(media.tvdbid).then((episodes) =>
                 {
-                    return searchPoster(media.tvdbid).then((images) =>
+                    return api.getImageTypes(media.tvdbid).then((types) =>
                     {
-                        return { serie: serie, episodes: episodes, poster: images[0] };
+                        return new Promise<cache>((resolve, reject) =>
+                        {
+                            var cacheItem: cache = { serie: serie, episodes: episodes };
+                            akala.eachAsync(types, function (type: api.ImageTypeResult, i, next)
+                            {
+                                api.getImagesByType(media.tvdbid, type.keyType).then((image) =>
+                                {
+                                    if (image != null)
+                                        switch (type.keyType)
+                                        {
+                                            case 'poster':
+                                                cacheItem.poster = image[0];
+                                                break;
+                                            case 'banner':
+                                                cacheItem.banner = image[0];
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    next();
+                                }, function (err)
+                                    {
+                                        console.log(err);
+                                        if (err)
+                                            next(err);
+                                    });
+                            }, function (err)
+                                {
+                                    resolve(cacheItem)
+                                })
+                        }) as PromiseLike<cache>;
                     })
                 });
             });
@@ -276,8 +318,9 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
             });
         return max;;
     };
-    function handleResults(item: SearchResult[])
+    function handleResults(item: api.SearchResult[])
     {
+        // console.log(item);
         /*if(media.name.toLowerCase()=='forever')
         {
             console.log(data.Series);
@@ -304,7 +347,7 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
         {
             var name = media.originalName || media.name;
             var max = 0;
-            var matchingSeries: SearchResult = null;
+            var matchingSeries: api.SearchResult = null;
             akala.each(item, function (serie)
             {
                 var c = confidence(name, [serie.seriesName].concat(serie.aliases));
@@ -331,21 +374,6 @@ function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
         }
     }
     if (!tvdbCache[media.name])
-        tvdbNameCache[media.name] = searchSerie(media.name);
+        tvdbNameCache[media.name] = api.searchSerieByName(media.name);
     return tvdbNameCache[media.name].then(handleResults);
 }
-
-akala.worker.createClient('media').then((client) =>
-{
-    var s = scrapper.createClient(client)({
-        scrap: function (media: DbTvShow)
-        {
-            var fileName = path.basename(media.path);
-            return tvdbScrapper(media.type, media).then(() =>
-            {
-                return media;
-            });
-        }
-    }).$proxy();
-    s.register({ type: 'video', priority: 20 });
-});

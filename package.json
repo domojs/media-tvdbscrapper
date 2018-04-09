@@ -1,7 +1,7 @@
 {
   "name": "@domojs/media-tvdbscrapper",
   "version": "1.0.0",
-  "main": "dist/server/index.ts",
+  "main": "dist/server/index.js",
   "types": "dist/server/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
@@ -16,5 +16,8 @@
     "@types/ws": "^4.0.2",
     "levenshtein": "^1.0.5"
   },
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "source-map-support": "^0.5.4"
+  }
 }
