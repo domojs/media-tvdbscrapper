@@ -1,14 +1,16 @@
 import * as akala from '@akala/server';
 import { scrapper } from '@domojs/media';
-import { DbTvShow, tvdbScrapper } from './scrapper';
+import { DbTvShow, tvdbScrapper, setLanguage } from './scrapper';
 import * as path from 'path';
 export * from './scrapper';
 
-akala.injectWithName(['$isModule', '$master'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration)
+akala.injectWithName(['$isModule', '$master', '$config'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration, config: any)
 {
     if (isModule('@akala/server'))
     {
         master(__dirname, './master');
+        if (config && config.language)
+            setLanguage(config.language);
 
         akala.worker.createClient('media').then((client) =>
         {
