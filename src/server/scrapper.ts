@@ -1,7 +1,6 @@
 import * as akala from '@akala/server';
 import { scrapper } from '@domojs/media';
 import * as path from 'path'
-import { Response } from 'request';
 import * as levenshtein from 'levenshtein';
 import { MediaType, TVShow, Movie } from '@domojs/media';
 import * as url from 'url';
@@ -141,11 +140,17 @@ namespace api
             url: 'https://api.thetvdb.com/login',
             method: 'post',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ apikey: APIKEY })
+            body: JSON.stringify({ apikey: APIKEY }),
+            type: 'json'
         }).then((response) =>
         {
-            if (response.response.statusCode == 200)
-                return currentJwt = JSON.parse(response.body);
+            if (response.status == 200)
+                return response.json().then((json) =>
+                {
+                    console.log(json);
+                    return currentJwt = json;
+                }) as PromiseLike<JWT>;
+            throw response;
         });
     }
 
@@ -189,16 +194,17 @@ namespace api
             });
         return http.call({
             url: url.format(new url.URL(path, 'https://api.thetvdb.com/')),
-            params: queryString,
+            queryString: queryString,
             type: 'json',
+            method:'GET',
             headers: { authorization: 'Bearer ' + jwt.token, "accept-language": requestLanguage || 'en' }
         }).then(function (result)
         {
-            if (result.response.statusCode == 404)
+            if (result.status == 404)
                 return null;
-            if (result.response.statusCode == 200)
-                return (<any>result.body).data as T;
-            return Promise.reject(result.response) as PromiseLike<T>;
+            if (result.status == 200)
+                return result.json().then(function(json){return json.data});
+            return Promise.reject(result) as PromiseLike<T>;
         }, function (err)
             {
                 console.error(err);
@@ -296,6 +302,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     {
         var max = 0;
         name = name.toLowerCase().replace(/[^A-Z0-9 ]/gi, '');
+        console.log(names);
         if (names)
             akala.each(names, function (n)
             {
@@ -320,7 +327,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     };
     function handleResults(item: api.SearchResult[])
     {
-        // console.log(item);
+        console.log(item);
         /*if(media.name.toLowerCase()=='forever')
         {
             console.log(data.Series);
@@ -329,7 +336,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
         {
             return buildPath(item[0], confidence(media.name, [item[0].seriesName].concat(item[0].aliases)));
         }
-        else if (item.length === 0)
+        else if (item && item.length === 0)
         {
             var splittedName = media.name.split(' ');
             if (splittedName.length > 1)
@@ -348,20 +355,21 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
             var name = media.originalName || media.name;
             var max = 0;
             var matchingSeries: api.SearchResult = null;
-            akala.each(item, function (serie)
-            {
-                var c = confidence(name, [serie.seriesName].concat(serie.aliases));
-                if (c >= max)
+            if (item)
+                akala.each(item, function (serie)
                 {
-                    if (c != max)
+                    var c = confidence(name, [serie.seriesName].concat(serie.aliases));
+                    if (c >= max)
                     {
-                        /*if(matchingSeries)
-                            console.log('replacing '+matchingSeries.SeriesName+'('+max+') by '+serie.SeriesName+'('+c+')');*/
-                        max = c;
-                        matchingSeries = serie;
+                        if (c != max)
+                        {
+                            /*if(matchingSeries)
+                                console.log('replacing '+matchingSeries.SeriesName+'('+max+') by '+serie.SeriesName+'('+c+')');*/
+                            max = c;
+                            matchingSeries = serie;
+                        }
                     }
-                }
-            });
+                });
             if (matchingSeries)
                 return buildPath(matchingSeries, max);
             else
@@ -375,5 +383,8 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     }
     if (!tvdbCache[media.name])
         tvdbNameCache[media.name] = api.searchSerieByName(media.name);
-    return tvdbNameCache[media.name].then(handleResults);
+    return tvdbNameCache[media.name].then(handleResults, function (err)
+    {
+        console.log(err);
+    });
 }

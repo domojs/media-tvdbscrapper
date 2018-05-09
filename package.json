@@ -10,9 +10,9 @@
   "author": "npenin",
   "license": "MIT",
   "dependencies": {
-    "@akala/server": "^1.0.87",
-    "@domojs/media": "^1.0.0",
-    "@types/request": "^2.47.0",
+    "@akala/core": "^2.0.0-8",
+    "@akala/server": "^2.0.1-4",
+    "@domojs/media": "^1.1.0-0",
     "@types/ws": "^4.0.2",
     "levenshtein": "^1.0.5"
   },

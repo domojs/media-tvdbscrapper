@@ -2,7 +2,6 @@ import 'source-map-support/register'
 import * as akala from '@akala/server';
 
 akala.register('$isModule', function () { return false });
-akala.register('$http', new akala.Http());
 
 import * as self from '../server/scrapper';
 self.setLanguage('fr');

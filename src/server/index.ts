@@ -14,7 +14,7 @@ akala.injectWithName(['$isModule', '$master', '$config'], function (isModule: ak
 
         akala.worker.createClient('media').then((client) =>
         {
-            var s = scrapper.createClient(client)({
+            var s = akala.api.jsonrpcws(scrapper).createClient(client)({
                 scrap: function (media: DbTvShow)
                 {
                     var fileName = path.basename(media.path);
