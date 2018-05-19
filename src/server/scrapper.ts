@@ -196,14 +196,14 @@ namespace api
             url: url.format(new url.URL(path, 'https://api.thetvdb.com/')),
             queryString: queryString,
             type: 'json',
-            method:'GET',
+            method: 'GET',
             headers: { authorization: 'Bearer ' + jwt.token, "accept-language": requestLanguage || 'en' }
         }).then(function (result)
         {
             if (result.status == 404)
                 return null;
             if (result.status == 200)
-                return result.json().then(function(json){return json.data});
+                return result.json().then(function (json) { return json.data });
             return Promise.reject(result) as PromiseLike<T>;
         }, function (err)
             {
