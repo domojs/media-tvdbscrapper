@@ -4,7 +4,7 @@ import { DbTvShow, tvdbScrapper, setLanguage } from './scrapper';
 import * as path from 'path';
 export * from './scrapper';
 
-akala.injectWithName(['$isModule', '$master', '$config'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration, config: any)
+akala.injectWithNameAsync(['$isModule', '$master', '$config'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration, config: any)
 {
     if (isModule('@akala/server'))
     {
@@ -27,4 +27,4 @@ akala.injectWithName(['$isModule', '$master', '$config'], function (isModule: ak
             s.register({ type: 'video', priority: 20 });
         });
     }
-})();
+});
