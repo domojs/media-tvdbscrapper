@@ -1,11 +1,11 @@
 import * as akala from '@akala/server';
-import { scrapper } from '@domojs/media';
+import { scrapper, Media } from '@domojs/media';
 import * as path from 'path'
 import * as levenshtein from 'levenshtein';
 import { MediaType, TVShow, Movie } from '@domojs/media';
 import * as url from 'url';
 const APIKEY = '833A54EE450AAD6F';
-const log=akala.log('domojs:media:tvdbscrapper');
+const log = akala.log('domojs:media:tvdbscrapper');
 
 
 var http: akala.Http = akala.resolve('$http');
@@ -218,7 +218,7 @@ namespace api
 type cache = { serie: api.SeriesResult, poster?: api.ImageResult, episodes: api.EpisodeResult[], banner?: api.ImageResult };
 var tvdbNameCache: { [key: string]: PromiseLike<api.SearchResult[]> } = {};
 var tvdbCache: { [key: number]: PromiseLike<cache> } = {};
-export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
+export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike<Media>
 {
     var buildPath = function (Series: api.SearchResult, confidence: number)
     {
@@ -291,7 +291,10 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
                                     });
                             }, function (err)
                                 {
-                                    resolve(cacheItem)
+                                    if (err)
+                                        reject(err);
+                                    else
+                                        resolve(cacheItem)
                                 })
                         }) as PromiseLike<cache>;
                     })
@@ -329,14 +332,17 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     };
     function handleResults(item: api.SearchResult[])
     {
-        log(item);
         /*if(media.name.toLowerCase()=='forever')
         {
             console.log(data.Series);
         }*/
         if (item && item.length == 1)
         {
-            return buildPath(item[0], confidence(media.name, [item[0].seriesName].concat(item[0].aliases)));
+            return buildPath(item[0], confidence(media.name, [item[0].seriesName].concat(item[0].aliases))).then((newPath) =>
+            {
+                media.path = newPath;
+                return media;
+            });
         }
         else if (item && item.length === 0)
         {
@@ -373,7 +379,11 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
                     }
                 });
             if (matchingSeries)
-                return buildPath(matchingSeries, max);
+                return buildPath(matchingSeries, max).then((newPath) =>
+                {
+                    media.path = newPath;
+                    return media;
+                })
             else
             {
                 console.log('could no find a matching serie for ' + name);
@@ -387,6 +397,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
         tvdbNameCache[media.name] = api.searchSerieByName(media.name);
     return tvdbNameCache[media.name].then(handleResults, function (err)
     {
-        log(err);
+        if (err)
+            log(err);
     });
 }
