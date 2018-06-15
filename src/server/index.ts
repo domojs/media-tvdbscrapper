@@ -6,7 +6,7 @@ export * from './scrapper';
 
 akala.injectWithNameAsync(['$isModule', '$master', '$config'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration, config: any)
 {
-    if (isModule('@akala/server'))
+    if (isModule('@domojs/media-tvdbscrapper'))
     {
         master(__dirname, './master');
         if (config && config.language)
