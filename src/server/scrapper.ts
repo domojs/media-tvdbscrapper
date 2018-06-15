@@ -5,6 +5,8 @@ import * as levenshtein from 'levenshtein';
 import { MediaType, TVShow, Movie } from '@domojs/media';
 import * as url from 'url';
 const APIKEY = '833A54EE450AAD6F';
+const log=akala.log('domojs:media:tvdbscrapper');
+
 
 var http: akala.Http = akala.resolve('$http');
 
@@ -147,7 +149,7 @@ namespace api
             if (response.status == 200)
                 return response.json().then((json) =>
                 {
-                    console.log(json);
+                    log(json);
                     return currentJwt = json;
                 }) as PromiseLike<JWT>;
             throw response;
@@ -228,7 +230,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
         var newName = media.displayName;
         var handleSerie = function (cacheItem: cache)
         {
-            //console.log(media.path);
+            log(media.path);
             if (cacheItem.poster && (media.episode == 1 || !media.episode))
                 media.cover = 'https://thetvdb.com/banners/' + cacheItem.poster.fileName;
             if (cacheItem.episodes)
@@ -283,7 +285,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
                                     next();
                                 }, function (err)
                                     {
-                                        console.log(err);
+                                        log(err);
                                         if (err)
                                             next(err);
                                     });
@@ -302,7 +304,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     {
         var max = 0;
         name = name.toLowerCase().replace(/[^A-Z0-9 ]/gi, '');
-        console.log(names);
+        log(names);
         if (names)
             akala.each(names, function (n)
             {
@@ -327,7 +329,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
     };
     function handleResults(item: api.SearchResult[])
     {
-        console.log(item);
+        log(item);
         /*if(media.name.toLowerCase()=='forever')
         {
             console.log(data.Series);
@@ -376,15 +378,15 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow)
             {
                 console.log('could no find a matching serie for ' + name);
                 if (item)
-                    console.log(item);
+                    log(item);
                 return Promise.resolve(media);
             }
         }
     }
-    if (!tvdbCache[media.name])
+    if (!tvdbNameCache[media.name])
         tvdbNameCache[media.name] = api.searchSerieByName(media.name);
     return tvdbNameCache[media.name].then(handleResults, function (err)
     {
-        console.log(err);
+        log(err);
     });
 }
