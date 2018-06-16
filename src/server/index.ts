@@ -21,7 +21,6 @@ akala.injectWithNameAsync(['$isModule', '$master', '$config.@domojs/media-tvdbsc
                 {
                     return tvdbScrapper(media.type, media).then((newPath) =>
                     {
-                        media.path = newPath;
                         return media;
                     });
                 }
