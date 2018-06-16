@@ -1,5 +1,4 @@
 import * as akala from '@akala/server';
-import { scrapper, Media } from '@domojs/media';
 import * as path from 'path'
 import * as levenshtein from 'levenshtein';
 import { MediaType, TVShow, Movie } from '@domojs/media';
@@ -218,7 +217,7 @@ namespace api
 type cache = { serie: api.SeriesResult, poster?: api.ImageResult, episodes: api.EpisodeResult[], banner?: api.ImageResult };
 var tvdbNameCache: { [key: string]: PromiseLike<api.SearchResult[]> } = {};
 var tvdbCache: { [key: number]: PromiseLike<cache> } = {};
-export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike<Media>
+export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike<string>
 {
     var buildPath = function (Series: api.SearchResult, confidence: number)
     {
@@ -338,11 +337,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
         }*/
         if (item && item.length == 1)
         {
-            return buildPath(item[0], confidence(media.name, [item[0].seriesName].concat(item[0].aliases))).then((newPath) =>
-            {
-                media.path = newPath;
-                return media;
-            });
+            return buildPath(item[0], confidence(media.name, [item[0].seriesName].concat(item[0].aliases)));
         }
         else if (item && item.length === 0)
         {
@@ -379,17 +374,13 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                     }
                 });
             if (matchingSeries)
-                return buildPath(matchingSeries, max).then((newPath) =>
-                {
-                    media.path = newPath;
-                    return media;
-                })
+                return buildPath(matchingSeries, max);
             else
             {
                 console.log('could no find a matching serie for ' + name);
                 if (item)
                     log(item);
-                return Promise.resolve(media);
+                return Promise.resolve(media.path);
             }
         }
     }
@@ -399,5 +390,6 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
     {
         if (err)
             log(err);
+        throw err;
     });
 }
