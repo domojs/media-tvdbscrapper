@@ -8,11 +8,12 @@ akala.injectWithNameAsync(['$isModule', '$master', '$config.@domojs/media-tvdbsc
     if (isModule('@domojs/media-tvdbscrapper'))
     {
         master(__dirname, './master');
-        config.then(function (config)
-        {
-            if (config && config.language)
-                setLanguage(config.language);
-        });
+        if (config)
+            config.then(function (config)
+            {
+                if (config && config.language)
+                    setLanguage(config.language);
+            });
 
         akala.worker.createClient('media').then((client) =>
         {
