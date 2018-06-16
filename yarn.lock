@@ -11,8 +11,8 @@
     mock-require "^3.0.2"
 
 "@akala/client@^2.0.4":
-  version "2.0.40"
-  resolved "https://registry.yarnpkg.com/@akala/client/-/client-2.0.40.tgz#0911c90b4021e8d301692ea558ff1434ec11d71e"
+  version "2.0.41"
+  resolved "https://registry.yarnpkg.com/@akala/client/-/client-2.0.41.tgz#42d9c53ab139923ec3255cbf843836bd8f92ac6d"
   optionalDependencies:
     showdown "^1.8.6"
 
@@ -65,8 +65,8 @@
     xml2js "^0.4.19"
 
 "@domojs/media@^1.1.27":
-  version "1.1.27"
-  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.27.tgz#d7069c1cfaf2813cb243a3acb09869f49265ccfd"
+  version "1.1.29"
+  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.29.tgz#bb1c115ef7260a6809f3a168ee71ee2447b48d3e"
   dependencies:
     "@akala/cli" "^0.0.3"
     "@akala/client" "^2.0.4"
