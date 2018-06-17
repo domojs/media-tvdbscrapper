@@ -384,6 +384,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
             }
         }
     }
+    
     if (!tvdbNameCache[media.name])
         tvdbNameCache[media.name] = api.searchSerieByName(media.name);
     return tvdbNameCache[media.name].then(handleResults, function (err)
