@@ -265,6 +265,8 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                         return new Promise<cache>((resolve, reject) =>
                         {
                             var cacheItem: cache = { serie: serie, episodes: episodes };
+                            if (!types)
+                                return resolve(cacheItem);
                             akala.eachAsync(types, function (type: api.ImageTypeResult, i, next)
                             {
                                 api.getImagesByType(media.tvdbid, type.keyType).then((image) =>
