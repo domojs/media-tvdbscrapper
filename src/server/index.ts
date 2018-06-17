@@ -1,13 +1,13 @@
 import * as akala from '@akala/server';
+import { Client, Connection } from '@akala/json-rpc-ws';
 import { scrapper } from '@domojs/media';
 import { DbTvShow, tvdbScrapper, setLanguage } from './scrapper';
 export * from './scrapper';
 
-akala.injectWithNameAsync(['$isModule', '$master', '$config.@domojs/media-tvdbscrapper'], function (isModule: akala.worker.IsModule, master: akala.worker.MasterRegistration, config: PromiseLike<any>)
+akala.injectWithNameAsync(['$isModule', '$config.@domojs/media-tvdbscrapper', '$agent.media'], function (isModule: akala.worker.IsModule, config: PromiseLike<any>, client: PromiseLike<Client<Connection>>)
 {
     if (isModule('@domojs/media-tvdbscrapper'))
     {
-        master(__dirname, './master');
         if (config)
             config.then(function (config)
             {
@@ -15,19 +15,17 @@ akala.injectWithNameAsync(['$isModule', '$master', '$config.@domojs/media-tvdbsc
                     setLanguage(config.language);
             });
 
-        akala.worker.createClient('media').then((client) =>
-        {
-            var s = akala.api.jsonrpcws(scrapper).createClient(client)({
-                scrap: function (media: DbTvShow)
+        var s = akala.api.jsonrpcws(scrapper).createClient(client)({
+            scrap: function (media: DbTvShow)
+            {
+                console.log('tvdbscrapper');
+                return tvdbScrapper(media.type, media).then((newPath) =>
                 {
-                    console.log('tvdbscrapper');
-                    return tvdbScrapper(media.type, media).then((newPath) =>
-                    {
-                        return media;
-                    });
-                }
-            }).$proxy();
-            s.register({ type: 'video', priority: 20 });
-        });
+                    media['optimizedPath'] = newPath;
+                    return media;
+                });
+            }
+        }).$proxy();
+        s.register({ type: 'video', priority: 20 });
     }
 });

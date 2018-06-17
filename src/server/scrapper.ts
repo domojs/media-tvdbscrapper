@@ -219,6 +219,35 @@ var tvdbNameCache: { [key: string]: PromiseLike<api.SearchResult[]> } = {};
 var tvdbCache: { [key: number]: PromiseLike<cache> } = {};
 export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike<string>
 {
+
+    var handleSerie = function (cacheItem: cache, confidence: number)
+    {
+        var newName = media.displayName;
+        if (cacheItem.poster && (media.episode == 1 || !media.episode))
+            media.cover = 'https://thetvdb.com/banners/' + cacheItem.poster.fileName;
+        if (cacheItem.episodes)
+        {
+            media.episodes = cacheItem.episodes.length;
+            var matchingEpisode = akala.grep(cacheItem.episodes, function (e: api.EpisodeResult)
+            {
+                return media.episode && e.airedEpisodeNumber == media.episode && (!media.season || media.season == e.airedSeason[0]);
+            })[0];
+            if (matchingEpisode)
+            {
+                media.absoluteEpisode = matchingEpisode.absoluteNumber;
+                if (confidence > 0.5 && media.episode)
+                    newName = newName + ' - ' + matchingEpisode.airedEpisodeNumber[0]
+            }
+        }
+
+        if ('Animation' in cacheItem.serie.genre)
+            if (confidence > 0.5)
+                return 'Animes/' + cacheItem.serie.seriesName + '/' + newName + path.extname(media.path);
+            else
+                return 'Animes/' + (media.originalName || media.name) + '/' + newName + path.extname(media.path);
+        else
+            return 'TV Series/' + cacheItem.serie.seriesName + '/' + newName + path.extname(media.path);
+    };
     var buildPath = function (Series: api.SearchResult, confidence: number)
     {
         if (Series.overview)
@@ -226,35 +255,6 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
         media.tvdbid = Series.id;
         if (confidence > 0.8)
             media.name = Series.seriesName;
-        var newName = media.displayName;
-        var handleSerie = function (cacheItem: cache)
-        {
-            log(media.path);
-            if (cacheItem.poster && (media.episode == 1 || !media.episode))
-                media.cover = 'https://thetvdb.com/banners/' + cacheItem.poster.fileName;
-            if (cacheItem.episodes)
-            {
-                media.episodes = cacheItem.episodes.length;
-                var matchingEpisode = akala.grep(cacheItem.episodes, function (e: api.EpisodeResult)
-                {
-                    return media.episode && e.airedEpisodeNumber == media.episode && (!media.season || media.season == e.airedSeason[0]);
-                })[0];
-                if (matchingEpisode)
-                {
-                    media.absoluteEpisode = matchingEpisode.absoluteNumber;
-                    if (confidence > 0.5 && media.episode)
-                        newName = newName + ' - ' + matchingEpisode.airedEpisodeNumber[0]
-                }
-            }
-
-            if ('Animation' in cacheItem.serie.genre)
-                if (confidence > 0.5)
-                    return 'Animes/' + Series.seriesName + '/' + newName + path.extname(media.path);
-                else
-                    return 'Animes/' + (media.originalName || media.name) + '/' + newName + path.extname(media.path);
-            else
-                return 'TV Series/' + Series.seriesName + '/' + newName + path.extname(media.path);
-        };
         if (!tvdbCache[media.tvdbid])
             tvdbCache[media.tvdbid] = api.getSerie(media.tvdbid).then((serie) =>
             {
@@ -299,7 +299,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                     })
                 });
             });
-        return tvdbCache[media.tvdbid].then(handleSerie);
+        return tvdbCache[media.tvdbid].then((serie) => handleSerie(serie, confidence));
 
     };
     var confidence = function (name: string, names: string[])
@@ -384,7 +384,56 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
             }
         }
     }
-    
+
+    if (media.tvdbid)
+    {
+        if (!tvdbCache[media.tvdbid])
+            tvdbCache[media.tvdbid] = api.getSerie(media.tvdbid).then((serie) =>
+            {
+                return api.getEpisodes(media.tvdbid).then((episodes) =>
+                {
+                    return api.getImageTypes(media.tvdbid).then((types) =>
+                    {
+                        return new Promise<cache>((resolve, reject) =>
+                        {
+                            var cacheItem: cache = { serie: serie, episodes: episodes };
+                            akala.eachAsync(types, function (type: api.ImageTypeResult, i, next)
+                            {
+                                api.getImagesByType(media.tvdbid, type.keyType).then((image) =>
+                                {
+                                    if (image != null)
+                                        switch (type.keyType)
+                                        {
+                                            case 'poster':
+                                                cacheItem.poster = image[0];
+                                                break;
+                                            case 'banner':
+                                                cacheItem.banner = image[0];
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    next();
+                                }, function (err)
+                                    {
+                                        log(err);
+                                        if (err)
+                                            next(err);
+                                    });
+                            }, function (err)
+                                {
+                                    if (err)
+                                        reject(err);
+                                    else
+                                        resolve(cacheItem)
+                                })
+                        }) as PromiseLike<cache>;
+                    })
+                });
+            });
+        tvdbCache[media.tvdbid].then(cache => handleSerie(cache, 1));
+    }
+
     if (!tvdbNameCache[media.name])
         tvdbNameCache[media.name] = api.searchSerieByName(media.name);
     return tvdbNameCache[media.name].then(handleResults, function (err)
