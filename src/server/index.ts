@@ -20,6 +20,7 @@ akala.injectWithNameAsync(['$isModule', '$master', '$config.@domojs/media-tvdbsc
             var s = akala.api.jsonrpcws(scrapper).createClient(client)({
                 scrap: function (media: DbTvShow)
                 {
+                    console.log('tvdbscrapper');
                     return tvdbScrapper(media.type, media).then((newPath) =>
                     {
                         return media;
