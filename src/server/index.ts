@@ -4,23 +4,19 @@ import { scrapper } from '@domojs/media';
 import { DbTvShow, tvdbScrapper, setLanguage } from './scrapper';
 export * from './scrapper';
 
-akala.injectWithNameAsync(['$isModule', '$config.@domojs/media-tvdbscrapper', '$agent.media'], function (isModule: akala.worker.IsModule, config: PromiseLike<any>, client: Client<Connection>)
+akala.injectWithNameAsync(['$isModule', '$config.@domojs/media-tvdbscrapper', '$agent.media'], function (isModule: akala.worker.IsModule, config: any, client: Client<Connection>)
 {
     if (isModule('@domojs/media-tvdbscrapper'))
     {
-        if (config)
-            config.then(function (config)
-            {
-                if (config && config.language)
-                    setLanguage(config.language);
-            });
+        if (typeof (config) != 'undefined' && config.language)
+            setLanguage(config.language);
 
         var s = akala.api.jsonrpcws(scrapper).createClient(client)({
             scrap: function (media: DbTvShow)
             {
                 return tvdbScrapper(media.type, media).then((newPath) =>
                 {
-                    media['optimizedPath'] = newPath;
+                    media.optimizedPath = newPath;
                     return media;
                 });
             }

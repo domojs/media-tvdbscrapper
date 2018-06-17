@@ -12,6 +12,7 @@ var http: akala.Http = akala.resolve('$http');
 export interface DbTvShow extends TVShow
 {
     tvdbid: number;
+    optimizedPath:string;
 }
 
 export interface DbTvMovie extends Movie
@@ -19,6 +20,7 @@ export interface DbTvMovie extends Movie
     tvdbid: number;
     displayName: string;
     overview: string;
+    optimizedPath:string;
 }
 
 export function setLanguage(l: string)
