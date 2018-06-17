@@ -306,8 +306,9 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
     {
         var max = 0;
         name = name.toLowerCase().replace(/[^A-Z0-9 ]/gi, '');
-        log(names);
         if (names)
+        {
+            log(`${name} confidence in ${names}`);
             akala.each(names, function (n)
             {
                 var tokens = n.replace(/ \([0-9]{4}\)$/, '').replace(/[^A-Z0-9 ]/gi, '').toLowerCase();
@@ -327,6 +328,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                 if (c >= max)
                     max = c;
             });
+        }
         return max;;
     };
     function handleResults(item: api.SearchResult[])
