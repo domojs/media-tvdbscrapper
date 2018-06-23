@@ -4,6 +4,7 @@ import { MediaType, TVShow, Movie, confidence } from '@domojs/media';
 import * as url from 'url';
 const APIKEY = '833A54EE450AAD6F';
 const log = akala.log('domojs:media:tvdbscrapper');
+const errorlog = akala.log('error:domojs:media:tvdbscrapper');
 
 
 var http: akala.Http = akala.resolve('$http');
@@ -353,7 +354,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                 return buildPath(matchingSeries, max);
             else
             {
-                console.log('could no find a matching serie for ' + name);
+                errorlog('could not find a matching serie for ' + name);
                 if (item)
                     log(item);
                 return Promise.resolve(media.path);
