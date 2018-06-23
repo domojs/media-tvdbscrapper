@@ -17,8 +17,8 @@
     showdown "^1.8.6"
 
 "@akala/core@^2.0.0", "@akala/core@^2.0.0-17", "@akala/core@^2.0.29":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.0.31.tgz#28d8fc8b4459fcd1ad442fec41f11118413f1c4c"
+  version "2.0.32"
+  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.0.32.tgz#961f27f4e24e5aba0b6c4bba00afaed41099f723"
   dependencies:
     "@akala/json-rpc-ws" "^4.1.10"
     "@types/mock-require" "^2.0.0"
