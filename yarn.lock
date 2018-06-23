@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@akala/cli@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@akala/cli/-/cli-0.0.3.tgz#7b0ca4edced67fa3d34aa113a84348eb07a1a4a7"
+"@akala/cli@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@akala/cli/-/cli-0.0.8.tgz#9133933ebee9faa262ffd3359033056555d66456"
   dependencies:
-    "@akala/core" "^2.0.0-17"
-    "@akala/server" "^2.0.1-7"
+    "@akala/core" "^2.0.0"
+    "@akala/server" "^2.0.5"
     mock-require "^3.0.2"
 
 "@akala/client@^2.0.4":
@@ -45,7 +45,7 @@
     uuid "^3.0.0"
     ws "^3.0.0"
 
-"@akala/server@^2.0.1-7", "@akala/server@^2.0.24", "@akala/server@^2.0.5":
+"@akala/server@^2.0.24", "@akala/server@^2.0.5":
   version "2.0.24"
   resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.24.tgz#604534f0dac94e3ef01f5b30b1eacd0275f91dfd"
   dependencies:
@@ -64,15 +64,16 @@
     ws "^3.3.2"
     xml2js "^0.4.19"
 
-"@domojs/media@^1.1.27":
-  version "1.1.36"
-  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.36.tgz#04e2cda05744aa6bd688871343113418f36b89bc"
+"@domojs/media@^1.1.37":
+  version "1.1.37"
+  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.37.tgz#14ea15eb3bcc2261e48568714ed312188f826666"
   dependencies:
-    "@akala/cli" "^0.0.3"
+    "@akala/cli" "^0.0.8"
     "@akala/client" "^2.0.4"
     "@akala/core" "^2.0.0"
-    "@akala/server" "^2.0.5"
+    "@akala/server" "^2.0.24"
     ioredis "^3.2.2"
+    levenshtein "^1.0.5"
 
 "@types/events@*":
   version "1.2.0"
