@@ -17,8 +17,8 @@
     showdown "^1.8.6"
 
 "@akala/core@^2.0.0", "@akala/core@^2.0.0-17", "@akala/core@^2.0.29":
-  version "2.0.29"
-  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.0.29.tgz#7333d3c262a46c34d16ce06c0468eff1bbc14e10"
+  version "2.0.31"
+  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.0.31.tgz#28d8fc8b4459fcd1ad442fec41f11118413f1c4c"
   dependencies:
     "@akala/json-rpc-ws" "^4.1.10"
     "@types/mock-require" "^2.0.0"
@@ -45,9 +45,9 @@
     uuid "^3.0.0"
     ws "^3.0.0"
 
-"@akala/server@^2.0.1-7", "@akala/server@^2.0.21", "@akala/server@^2.0.5":
-  version "2.0.23"
-  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.23.tgz#3cc95c74a7d4a5af3e5759d435cd6de31504148f"
+"@akala/server@^2.0.1-7", "@akala/server@^2.0.24", "@akala/server@^2.0.5":
+  version "2.0.24"
+  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.24.tgz#604534f0dac94e3ef01f5b30b1eacd0275f91dfd"
   dependencies:
     "@akala/core" "^2.0.0-17"
     "@akala/json-rpc-ws" "^4.1.23"
@@ -65,8 +65,8 @@
     xml2js "^0.4.19"
 
 "@domojs/media@^1.1.27":
-  version "1.1.29"
-  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.29.tgz#bb1c115ef7260a6809f3a168ee71ee2447b48d3e"
+  version "1.1.36"
+  resolved "https://registry.yarnpkg.com/@domojs/media/-/media-1.1.36.tgz#04e2cda05744aa6bd688871343113418f36b89bc"
   dependencies:
     "@akala/cli" "^0.0.3"
     "@akala/client" "^2.0.4"
@@ -89,8 +89,8 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "10.3.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.3.tgz#8798d9e39af2fa604f715ee6a6b19796528e46c3"
+  version "10.3.5"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.5.tgz#8423cdf6e6fb83433e489900d7600d3b61c8260c"
 
 "@types/ws@^4.0.2":
   version "4.0.2"
@@ -761,8 +761,8 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
 
 node-abi@^2.1.1, node-abi@^2.2.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.4.1.tgz#7628c4d4ec4e9cd3764ceb3652f36b2e7f8d4923"
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.4.3.tgz#43666b7b17e57863e572409edbb82115ac7af28b"
   dependencies:
     semver "^5.4.1"
 
@@ -1210,8 +1210,8 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
 tar-fs@^1.13.0:
-  version "1.16.2"
-  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-1.16.2.tgz#17e5239747e399f7e77344f5f53365f04af53577"
+  version "1.16.3"
+  resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-1.16.3.tgz#966a628841da2c4010406a82167cbd5e0c72d509"
   dependencies:
     chownr "^1.0.1"
     mkdirp "^0.5.1"

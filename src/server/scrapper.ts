@@ -326,7 +326,10 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                 var match = akala.grep(tokenArray, function (token: string)
                 {
                     var indexOfToken = name.indexOf(token);
-                    return token.length > 0 && indexOfToken > -1 && (indexOfToken + token.length == name.length || /^[^A-Z]/i.test(name.substring(indexOfToken + token.length)));
+                    if (indexOfToken > 0)
+                        indexOfToken--;
+                    var test = new RegExp('(?:^|\\W)' + akala.introspect.escapeRegExp(token) + '(?:$|\\W)');
+                    return token.length > 0 && indexOfToken > -1 && (indexOfToken + token.length == name.length || test.test(name.substring(indexOfToken, token.length + 1)));
                 });
                 c = match.length / name.split(' ').length * match.length / tokenArray.length;
                 if (c >= max)
