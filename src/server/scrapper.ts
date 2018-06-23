@@ -242,6 +242,9 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
             }
         }
 
+        if (confidence > 0.5 && !media.subType)
+            media.subType = 'tvshow';
+
         if ('Animation' in cacheItem.serie.genre)
             if (confidence > 0.5)
                 return 'Animes/' + cacheItem.serie.seriesName + '/' + newName + path.extname(media.path);
@@ -255,6 +258,10 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
         if (Series.overview)
             media.overview = Series.overview;
         media.tvdbid = Series.id;
+
+        if (media.subType && media.subType != 'tvshow')
+            confidence = confidence * 8;
+
         if (confidence > 0.8)
             media.name = Series.seriesName;
         if (!tvdbCache[media.tvdbid])

@@ -12,8 +12,10 @@
   "dependencies": {
     "@akala/core": "^2.0.29",
     "@akala/server": "^2.0.24",
-    "@domojs/media": "^1.1.37",
     "levenshtein": "^1.0.5"
+  },
+  "peerDependencies": {
+    "@domojs/media": "^1.1.37"
   },
   "description": "",
   "devDependencies": {
