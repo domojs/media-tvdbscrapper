@@ -12,7 +12,7 @@ var http: akala.Http = akala.resolve('$http');
 export interface DbTvShow extends TVShow
 {
     tvdbid: number;
-    optimizedPath:string;
+    optimizedPath: string;
 }
 
 export interface DbTvMovie extends Movie
@@ -20,7 +20,7 @@ export interface DbTvMovie extends Movie
     tvdbid: number;
     displayName: string;
     overview: string;
-    optimizedPath:string;
+    optimizedPath: string;
 }
 
 export function setLanguage(l: string)
@@ -237,8 +237,8 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
             if (matchingEpisode)
             {
                 media.absoluteEpisode = matchingEpisode.absoluteNumber;
-                if (confidence > 0.5 && media.episode)
-                    newName = newName + ' - ' + matchingEpisode.airedEpisodeNumber[0]
+                if (confidence > 0.5 && media.episode && media.absoluteEpisode)
+                    newName = newName + ' - ' + media.absoluteEpisode;
             }
         }
 
