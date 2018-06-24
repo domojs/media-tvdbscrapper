@@ -237,8 +237,16 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
             if (matchingEpisode)
             {
                 media.absoluteEpisode = matchingEpisode.absoluteNumber;
-                if (confidence > 0.5 && media.episode && media.absoluteEpisode)
-                    newName = media.absoluteEpisode + ' - ' + newName;
+                if (confidence > 0.5)
+                {
+                    if (media.episode && media.absoluteEpisode)
+                        newName = media.absoluteEpisode + ' - ' + newName;
+                    if (matchingEpisode.episodeName)
+                    {
+                        newName += ' - ' + matchingEpisode.episodeName;
+                        media.displayName += ' - ' + matchingEpisode.episodeName
+                    }
+                }
             }
         }
 
