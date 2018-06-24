@@ -364,7 +364,7 @@ export function tvdbScrapper(mediaType: MediaType, media: DbTvShow): PromiseLike
                 errorlog('could not find a matching serie for ' + name);
                 if (item)
                     log(item);
-                return Promise.resolve(media.path);
+                return Promise.resolve(null);
             }
         }
     }
