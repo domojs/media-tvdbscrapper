@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@akala/core@^2.0.0-17", "@akala/core@^2.0.29":
+"@akala/core@^2.0.29", "@akala/core@^2.0.33":
   version "2.0.33"
   resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.0.33.tgz#f5c2de47b69616301aab4e4acd9060822515439d"
   dependencies:
@@ -32,10 +32,10 @@
     ws "^3.0.0"
 
 "@akala/server@^2.0.24":
-  version "2.0.29"
-  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.29.tgz#5643950fe93364c2ffe3a69d7720bce081ef8f7d"
+  version "2.0.30"
+  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.30.tgz#7f7472eebb295bc3321550d6c8ce49a7a2e485a5"
   dependencies:
-    "@akala/core" "^2.0.0-17"
+    "@akala/core" "^2.0.33"
     "@akala/json-rpc-ws" "^4.1.23"
     body-parser "^1.18.2"
     debug "^3.1.0"
