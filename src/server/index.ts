@@ -11,7 +11,7 @@ akala.injectWithNameAsync(['$isModule', '$config.@domojs/media-tvdbscrapper', '$
         if (typeof (config) != 'undefined' && config.language)
             setLanguage(config.language);
 
-        var s = akala.api.jsonrpcws(scrapper).createClient(client)({
+        var s = akala.api.jsonrpcws(scrapper).createClient(client, {
             scrap: function (media: DbTvShow)
             {
                 return tvdbScrapper(media.type, media).then((newPath) =>
