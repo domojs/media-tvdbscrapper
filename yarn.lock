@@ -23,7 +23,7 @@
     utils-merge "^1.0.0"
     ws "^5.0.0"
 
-"@akala/json-rpc-ws@^4.1.10", "@akala/json-rpc-ws@^4.1.23":
+"@akala/json-rpc-ws@^4.1.10":
   version "4.1.23"
   resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-4.1.23.tgz#d790f2790b8daf78e7ed1fdfb4001d6349e566ad"
   dependencies:
@@ -31,12 +31,20 @@
     uuid "^3.0.0"
     ws "^3.0.0"
 
+"@akala/json-rpc-ws@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-7.0.0.tgz#9d2e019d70b4ac86871d56e73ff6ef8f0b2a042c"
+  dependencies:
+    debug "^3.1.0"
+    uuid "^3.3.2"
+    ws "^6.0.0"
+
 "@akala/server@^2.0.24":
-  version "2.0.30"
-  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.0.30.tgz#7f7472eebb295bc3321550d6c8ce49a7a2e485a5"
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@akala/server/-/server-2.1.1.tgz#83b46789e3d3b950064d24d5541b46d163af7cc2"
   dependencies:
     "@akala/core" "^2.0.33"
-    "@akala/json-rpc-ws" "^4.1.23"
+    "@akala/json-rpc-ws" "^7.0.0"
     body-parser "^1.18.2"
     debug "^3.1.0"
     express "^4.16.2"
@@ -981,7 +989,7 @@ utils-merge@1.0.1, utils-merge@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
 
-uuid@^3.0.0:
+uuid@^3.0.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
@@ -1018,6 +1026,12 @@ ws@^3.0.0, ws@^3.3.2:
 ws@^5.0.0:
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-5.2.1.tgz#37827a0ba772d072a843c3615b0ad38bcdb354eb"
+  dependencies:
+    async-limiter "~1.0.0"
+
+ws@^6.0.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-6.1.0.tgz#119a9dbf92c54e190ec18d10e871d55c95cf9373"
   dependencies:
     async-limiter "~1.0.0"
 
