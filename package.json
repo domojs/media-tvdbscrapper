@@ -20,7 +20,7 @@
   "description": "",
   "devDependencies": {
     "@types/levenshtein": "^1.0.1",
-    "@types/ws": "^4.0.2",
+    "@types/ws": "^6.0.1",
     "source-map-support": "^0.5.4"
   }
 }
