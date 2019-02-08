@@ -10,8 +10,8 @@
   "author": "npenin",
   "license": "MIT",
   "dependencies": {
-    "@akala/core": "^2.0.29",
-    "@akala/server": "^2.0.24",
+    "@akala/core": "^2.0.65",
+    "@akala/server": "^2.1.11",
     "levenshtein": "^1.0.5"
   },
   "peerDependencies": {
@@ -19,8 +19,10 @@
   },
   "description": "",
   "devDependencies": {
+    "@domojs/media": "^1.1.65",
+    "@types/debug": "^4.1.0",
     "@types/levenshtein": "^1.0.1",
-    "@types/ws": "^4.0.2",
-    "source-map-support": "^0.5.4"
+    "@types/ws": "^6.0.1",
+    "source-map-support": "^0.5.10"
   }
 }
