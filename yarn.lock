@@ -10,9 +10,9 @@
     showdown "^1.8.6"
 
 "@akala/core@^2.0.65", "@akala/core@^2.0.87":
-  version "2.1.13"
-  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.1.13.tgz#292234f6e61cfe535d506670008d0e18d1bb2e98"
-  integrity sha512-f9+DNfpnSnSDqL31cDnxHsMQFzJ1di+FpMt815dKqDpXMCzX07EOh1f1/AAjztFvuzlBcsvnduYpZsyeA42yLQ==
+  version "2.1.15"
+  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.1.15.tgz#56380374023e74b411b8179ec344f851497123b7"
+  integrity sha512-lJQm9Sre69PuGduG8ohaqRAFtteBI6nhpjVDlB0IvwZl9vg6JApVFlsKi8OUlVab7YaHc3QEuGc7KtwFUg2Rww==
   dependencies:
     "@akala/json-rpc-ws" "^9.0.11"
     browser-process-hrtime "^1.0.0"
