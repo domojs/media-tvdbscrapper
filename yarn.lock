@@ -10,11 +10,11 @@
     showdown "^1.8.6"
 
 "@akala/core@^2.0.65", "@akala/core@^2.0.87":
-  version "2.1.15"
-  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.1.15.tgz#56380374023e74b411b8179ec344f851497123b7"
-  integrity sha512-lJQm9Sre69PuGduG8ohaqRAFtteBI6nhpjVDlB0IvwZl9vg6JApVFlsKi8OUlVab7YaHc3QEuGc7KtwFUg2Rww==
+  version "2.1.18"
+  resolved "https://registry.yarnpkg.com/@akala/core/-/core-2.1.18.tgz#3ed646f1ceb5fc86a99f6993fcd87ff6433c7183"
+  integrity sha512-6TVFMCB+yD+yrlmzCLOnWJqAnHK39zaOKVZqmrMauAMmOhsgY2PoSwkeg4Kq0kDm0vJNahw0RDzV4/ausaeN3A==
   dependencies:
-    "@akala/json-rpc-ws" "^9.0.11"
+    "@akala/json-rpc-ws" "^9.0.13"
     browser-process-hrtime "^1.0.0"
     debug "^4.1.1"
     es6-promise "^4.2.8"
@@ -36,10 +36,10 @@
     uuid "^3.3.2"
     ws "^6.0.0"
 
-"@akala/json-rpc-ws@^9.0.11":
-  version "9.0.11"
-  resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-9.0.11.tgz#1286b4a195d7d8e044ffdc51c7a784dfcbfd4caf"
-  integrity sha512-RgF+MJM2gxPaNVI0XKybGyGkj346eGagFyYxOJISmELtNrcrPplAprcWlK0EQgYBfkolzRoMLaiSQd5ES3hXrA==
+"@akala/json-rpc-ws@^9.0.13":
+  version "9.0.13"
+  resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-9.0.13.tgz#557290d15c9fb229b0510e1b2513111c565af11f"
+  integrity sha512-NI0o1iRvHR67p0nrLu3nFfnicqVIcFnlqZQ2Vl466Vck4AJ2Pg95h27oUQXjZCvWMEshR6it26DxWY3/cyLAaA==
   dependencies:
     debug "^4.1.1"
     uuid "^7.0.3"
