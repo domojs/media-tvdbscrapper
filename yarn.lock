@@ -27,6 +27,25 @@
     utils-merge "^1.0.0"
     ws "^7.2.1"
 
+"@akala/core@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@akala/core/-/core-5.1.2.tgz#3c82031245c86b3c3e38da4d87695dc3e86dadc3"
+  integrity sha512-JIc1KtaIhxqePC5ZaBSC84YivuEpgQU5T0/3hpk6GNZj6G6RqVoYXqauAB6q0atbaIXIYTZq2TH1pxlM+ye76Q==
+  dependencies:
+    "@akala/json-rpc-ws" "^9.1.7"
+    browser-process-hrtime "^1.0.0"
+    debug "^4.1.1"
+    es6-promise "^4.2.8"
+    isomorphic-fetch "^3.0.0"
+    mock-require "^3.0.3"
+    orchestrator "^0.3.8"
+    parseurl "^1.3.1"
+    path-to-regexp "^6.1.0"
+    reflect-metadata "^0.1.13"
+    routington "^1.0.3"
+    utils-merge "^1.0.0"
+    ws "^7.2.1"
+
 "@akala/json-rpc-ws@^7.0.0":
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-7.0.1.tgz#a1fee836a04c66021ab6ce068eed058e003f57ea"
@@ -36,13 +55,14 @@
     uuid "^3.3.2"
     ws "^6.0.0"
 
-"@akala/json-rpc-ws@^9.0.16":
-  version "9.0.16"
-  resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-9.0.16.tgz#b1f22399a429a88374e988c9d43a037de5d886fd"
-  integrity sha512-y9FUFWg+WexaOnyJ7efL0mg41GY/VUYnpDjWsOAIenvQL5HwLRKyt3/5DjgX48aYJG58yA1ROsMLF8NUz6NOfQ==
+"@akala/json-rpc-ws@^9.0.16", "@akala/json-rpc-ws@^9.1.7":
+  version "9.1.7"
+  resolved "https://registry.yarnpkg.com/@akala/json-rpc-ws/-/json-rpc-ws-9.1.7.tgz#b3e742f2cf92dc0a63839ea5d4632fcce64371f7"
+  integrity sha512-deI8ofqOVChdQOZC5whedfWQX+4gbEQkxa6msDVAhuN4rzYPl0tKeYG1lqzLTNfE62dZ2sA+VtlK/PNExd3qng==
   dependencies:
     debug "^4.1.1"
-    uuid "^7.0.3"
+    reflect-metadata "^0.1.13"
+    uuid "^8.0.0"
     ws "^7.2.3"
 
 "@akala/server@^2.1.11":
@@ -512,6 +532,14 @@ isomorphic-fetch@^2.2.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
+isomorphic-fetch@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-fetch/-/isomorphic-fetch-3.0.0.tgz#0267b005049046d2421207215d45d6a262b8b8b4"
+  integrity sha512-qvUtwJ3j6qwsF3jLxkZ72qCgjMysPzDfeV240JHiGZsANBYd+EEuu35v7dfrJ9Up0Ak07D7GGSkGhCHTqg/5wA==
+  dependencies:
+    node-fetch "^2.6.1"
+    whatwg-fetch "^3.4.1"
+
 lcid@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
@@ -629,6 +657,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
+  integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
 
 normalize-path@^2.1.1:
   version "2.1.1"
@@ -784,6 +817,11 @@ redis-parser@^3.0.0:
   integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
   dependencies:
     redis-errors "^1.0.0"
+
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
 
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
@@ -1017,10 +1055,10 @@ uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-uuid@^7.0.3:
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-7.0.3.tgz#c5c9f2c8cf25dc0a372c4df1441c41f5bd0c680b"
-  integrity sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==
+uuid@^8.0.0:
+  version "8.3.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.1.tgz#2ba2e6ca000da60fce5a196954ab241131e05a31"
+  integrity sha512-FOmRr+FmWEIG8uhZv6C2bTgEVXsHk08kE7mPlrBbEe+c3r9pjceVPgupIfNIhc4yx55H69OXANrUaSuu9eInKg==
 
 vary@~1.1.2:
   version "1.1.2"
@@ -1031,6 +1069,11 @@ whatwg-fetch@>=0.10.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.0.0.tgz#fc804e458cc460009b1a2b966bc8817d2578aefb"
   integrity sha512-9GSJUgz1D4MfyKU7KRqwOjXCXTqWdFNvEr7eUBYchQiVc744mqK/MzXPNR2WsPkmkOa4ywfg8C2n8h+13Bey1Q==
+
+whatwg-fetch@^3.4.1:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.5.0.tgz#605a2cd0a7146e5db141e29d1c62ab84c0c4c868"
+  integrity sha512-jXkLtsR42xhXg7akoDKvKWE40eJeI+2KZqcp2h3NsOrRnDvtWX36KcKl30dy+hxECivdk2BVUHVNrPtoMBUx6A==
 
 which-module@^2.0.0:
   version "2.0.0"
